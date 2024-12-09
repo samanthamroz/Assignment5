@@ -3,48 +3,48 @@ from fastapi import status, Response
 from Assignment5.api.models import models
 
 
-def create(db: Session, order_details):
+def create(db: Session, recipes):
     # Create a new instance of the Order model with the provided data
-    db_order_details = models.OrderDetail(
-        id=order_details.id,
-        amount=order_details.amount
+    db_recipes = models.Recipe(
+        id=recipes.id,
+        amount=recipes.amount
     )
     # Add the newly created Order object to the database session
-    db.add(db_order_details)
+    db.add(db_recipes)
     # Commit the changes to the database
     db.commit()
     # Refresh the Order object to ensure it reflects the current state in the database
-    db.refresh(db_order_details)
+    db.refresh(db_recipes)
     # Return the newly created Order object
-    return db_order_details
+    return db_recipes
 
 
 def read_all(db: Session):
-    return db.query(models.OrderDetail).all()
+    return db.query(models.Recipe).all()
 
 
-def read_one(db: Session, order_id):
-    return db.query(models.OrderDetail).filter(models.OrderDetail.id == order_id).first()
+def read_one(db: Session, recipe_id):
+    return db.query(models.Recipe).filter(models.Recipe.id == recipe_id).first()
 
 
-def update(db: Session, order_details_id, sandwich):
+def update(db: Session, recipe_id, recipe):
     # Query the database for the specific order to update
-    db_order_details = db.query(models.OrderDetail).filter(models.OrderDetail.id == order_details_id)
+    db_recipes = db.query(models.Recipe).filter(models.Recipe.id == recipe_id)
     # Extract the update data from the provided 'order' object
-    update_data = sandwich.model_dump(exclude_unset=True)
+    update_data = recipe.model_dump(exclude_unset=True)
     # Update the database record with the new data, without synchronizing the session
-    db_order_details.update(update_data, synchronize_session=False)
+    db_recipes.update(update_data, synchronize_session=False)
     # Commit the changes to the database
     db.commit()
     # Return the updated order record
-    return db_order_details.first()
+    return db_recipes.first()
 
 
-def delete(db: Session, order_details_id):
+def delete(db: Session, recipe_id):
     # Query the database for the specific order to delete
-    db_order_details = db.query(models.OrderDetail).filter(models.OrderDetail.id == order_details_id)
+    db_recipes = db.query(models.Recipe).filter(models.Recipe.id == recipe_id)
     # Delete the database record without synchronizing the session
-    db_order_details.delete(synchronize_session=False)
+    db_recipes.delete(synchronize_session=False)
     # Commit the changes to the database
     db.commit()
     # Return a response with a status code indicating success (204 No Content)
