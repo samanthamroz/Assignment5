@@ -3,12 +3,12 @@ from fastapi import status, Response
 from Assignment5.api.models import models
 
 
-def create(db: Session, resources):
+def create(db: Session, resource):
     # Create a new instance of the Order model with the provided data
     db_resources = models.Resource(
-        id=resources.id,
-        item=resources.item,
-        amount=resources.amount
+        id=resource.id,
+        item=resource.item,
+        amount=resource.amount
     )
     # Add the newly created Order object to the database session
     db.add(db_resources)
@@ -24,7 +24,7 @@ def read_all(db: Session):
     return db.query(models.Resource).all()
 
 
-def read_one(db: Session, order_id):
+def read_one(db: Session, resource_id):
     return db.query(models.Resource).filter(models.Resource.id == order_id).first()
 
 

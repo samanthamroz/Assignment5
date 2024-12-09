@@ -3,11 +3,11 @@ from fastapi import status, Response
 from Assignment5.api.models import models
 
 
-def create(db: Session, recipes):
+def create(db: Session, recipe):
     # Create a new instance of the Order model with the provided data
     db_recipes = models.Recipe(
-        id=recipes.id,
-        amount=recipes.amount
+        id=recipe.id,
+        amount=recipe.amount
     )
     # Add the newly created Order object to the database session
     db.add(db_recipes)
